@@ -13,6 +13,7 @@ services:
       - ./backend:/app/
     env_file:
       - .env
+    command: runserver
     networks:
       - nextstep_net
 
