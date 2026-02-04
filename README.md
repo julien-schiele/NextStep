@@ -149,7 +149,7 @@ NextStep demonstrates how to:
 Clone the repository with submodules
 
 ```bash
-git clone --recurse-submodules https://github.com/<your-username>/NextStep.git
+git clone --recurse-submodules https://github.com/julien-schiele/NextStep.git
 cd NextStep
 ```
 Create a `.env` file at the root of the project:
