@@ -176,7 +176,7 @@ Then run:
 docker-compose up --build
 ```
 
-API will be available via Swagger.
+API will be available via Swagger at [http://0.0.0.0:8000/swagger/](http://0.0.0.0:8000/swagger/)
 
 ---
 
