@@ -1,0 +1,79 @@
+services:
+
+  django:
+    build:
+      context: ./backend
+    container_name: nextstep_django
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    volumes:
+      - ./backend:/app/
+    env_file:
+      - .env
+    command: runserver
+    networks:
+      - nextstep_net
+
+  nextjs:
+    build:
+      context: ./frontend
+    container_name: nextstep_nextjs
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - django
+    volumes:
+      - ./frontend:/app:cached
+      - frontend_node_modules:/app/node_modules/
+    env_file:
+      - .env
+    networks:
+      - nextstep_net
+
+  database:
+    image: postgres:15
+    container_name: nextstep_database
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    networks:
+      - nextstep_net
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: nextstep_pgadmin
+    restart: unless-stopped
+    ports:
+      - "8888:80"
+    env_file:
+      - .env
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - nextstep_net
+
+  plantuml-server:
+    image: plantuml/plantuml-server:latest
+    container_name: nextstep_plantuml
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    networks:
+      - nextstep_net
+
+volumes:
+  frontend_node_modules:
+  db_data:
+  pgadmin_data:
+
+networks:
+  nextstep_net:
+    driver: bridge
