@@ -6,6 +6,9 @@
 
 This repository is a **portfolio project demonstrating production-grade backend design**, not a toy app. The sports example is only a **use case** — the real product is a **reusable progression platform**.
 
+#### ⚠️ Disclaimer ####
+All program content is for demonstration purposes only. **NextStep** is a progression engine demo and should not be used as professional fitness advice. Users are responsible for their own health and safety.
+
 ---
 
 ## 🎯 Vision & Problem Statement
@@ -156,8 +159,8 @@ Create a `.env` file at the root of the project:
 
 ```env
 POSTGRES_DB=NextStep
-POSTGRES_USER=username
-POSTGRES_PASSWORD=password
+POSTGRES_USER=john
+POSTGRES_PASSWORD=john@123
 
 DB_ENGINE=django.db.backends.postgresql
 DB_HOST=database
@@ -166,8 +169,16 @@ DB_NAME=${POSTGRES_DB}
 DB_USER=${POSTGRES_USER}
 DB_PASSWORD=${POSTGRES_PASSWORD}
 
-PGADMIN_DEFAULT_EMAIL=email
-PGADMIN_DEFAULT_PASSWORD=password
+PGADMIN_DEFAULT_EMAIL=john.doe@example.com
+PGADMIN_DEFAULT_PASSWORD=john@123
+
+NEXT_PUBLIC_API_URL=http://localhost:8000/api
+NEXT_SERVER_API_URL=http://django:8000/api
+
+EMAIL_HOST="smtp-server"
+EMAIL_PORT="1025"
+FE_HOST_URL=http://localhost:3000
+BE_HOST_URL=http://localhost:8000
 ```
 
 Then run:
