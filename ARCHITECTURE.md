@@ -124,6 +124,12 @@ cp .env.example .env
 docker compose up
 ```
 
+Keep git tree clean using:
+```bash 
+git merge --no-ff develop -m "merge (develop): ..."
+```
+
+
 App available at:
 - Frontend: http://localhost:3000
 - API: http://localhost:8000
