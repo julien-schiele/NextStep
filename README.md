@@ -158,25 +158,32 @@ cd NextStep
 Create a `.env` file at the root of the project:
 
 ```env
-POSTGRES_DB=NextStep
-POSTGRES_USER=john
-POSTGRES_PASSWORD=john@123
+# ── PgAdmin ──────────────────────────────────────────────────────────────────
+PGADMIN_DEFAULT_EMAIL=an_email
+PGADMIN_DEFAULT_PASSWORD=a_password
 
+# ── Database ──────────────────────────────────────────────────────────────────
+POSTGRES_DB=nextstep
+POSTGRES_USER=nextstep
+POSTGRES_PASSWORD=replace-with-strong-password
 DB_ENGINE=django.db.backends.postgresql
 DB_HOST=database
 DB_PORT=5432
-DB_NAME=${POSTGRES_DB}
-DB_USER=${POSTGRES_USER}
-DB_PASSWORD=${POSTGRES_PASSWORD}
 
-PGADMIN_DEFAULT_EMAIL=john.doe@example.com
-PGADMIN_DEFAULT_PASSWORD=john@123
+# ── Django ────────────────────────────────────────────────────────────────────
+DJANGO_SECRET_KEY=replace-with-generated-secret-key
+DJANGO_DEBUG=True
+DJANGO_ALLOWED_HOSTS=localhost,django,0.0.0.0
 
+# ── Email ────────────────────────────────────────────────────────────
+EMAIL_HOST="smtp-server"
+EMAIL_PORT="1025"
+
+# ── Frontend ──────────────────────────────────────────────────────────────────
 NEXT_PUBLIC_API_URL=http://localhost:8000/api
 NEXT_SERVER_API_URL=http://django:8000/api
 
-EMAIL_HOST="smtp-server"
-EMAIL_PORT="1025"
+# ── URLs ──────────────────────────────────────────────────────────────────────
 FE_HOST_URL=http://localhost:3000
 BE_HOST_URL=http://localhost:8000
 ```

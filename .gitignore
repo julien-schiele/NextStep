@@ -1,1 +1,8 @@
+# Environment files
 .env
+.env.prod
+.env.prod.local
+
+# Keep examples versioned
+!.env.example
+!.env.prod.example
