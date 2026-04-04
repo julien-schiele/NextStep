@@ -35,7 +35,7 @@ jobs:
   # ─────────────────────────────────────────────────────────────────────────
   test-backend:
     needs: changes
-    if: needs.changes.outputs.backend == 'true'
+    if: needs.changes.outputs.backend == 'true' || startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -80,7 +80,7 @@ jobs:
   # ─────────────────────────────────────────────────────────────────────────
   test-frontend:
     needs: changes
-    if: needs.changes.outputs.frontend == 'true'
+    if: needs.changes.outputs.frontend == 'true' || startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -112,8 +112,8 @@ jobs:
     needs: [changes, test-backend]
     if: |
       always() &&
-      needs.changes.outputs.backend == 'true' &&
-      (needs.test-backend.result == 'success')
+      (needs.test-backend.result == 'success' || needs.test-backend.result == 'skipped') &&
+      needs.test-backend.result != 'failure'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -146,8 +146,8 @@ jobs:
     needs: [changes, test-frontend]
     if: |
       always() &&
-      needs.changes.outputs.frontend == 'true' &&
-      (needs.test-frontend.result == 'success')
+      (needs.test-frontend.result == 'success' || needs.test-frontend.result == 'skipped') &&
+      needs.test-frontend.result != 'failure'
     runs-on: ubuntu-latest
     permissions:
       contents: read
