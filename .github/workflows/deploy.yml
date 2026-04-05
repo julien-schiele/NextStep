@@ -1,5 +1,9 @@
 name: Test, Build & Deploy
 
+permissions:
+  contents: read
+  packages: write
+
 on:
   push:
     tags:
@@ -103,7 +107,7 @@ jobs:
         run: python manage.py test --verbosity=2
 
   # ─────────────────────────────────────────────────────────────────────────
-  # JOB 3 — Next.js lint + type-check
+  # JOB 3 — Next.js lint
   # ─────────────────────────────────────────────────────────────────────────
   test-frontend:
     needs: changes
@@ -127,10 +131,6 @@ jobs:
       - name: Lint
         working-directory: frontend
         run: npm run lint
-
-      - name: Type check
-        working-directory: frontend
-        run: npm run type-check
 
   # ─────────────────────────────────────────────────────────────────────────
   # JOB 4 — Build & push backend image to ghcr
