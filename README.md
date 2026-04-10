@@ -175,6 +175,10 @@ DJANGO_SECRET_KEY=replace-with-generated-secret-key
 DJANGO_DEBUG=True
 DJANGO_ALLOWED_HOSTS=localhost,django,0.0.0.0
 
+# ── CORS / CSRF ───────────────────────────────────────────────────────────────
+CORS_ALLOWED_ORIGINS=http://localhost:3000
+CSRF_TRUSTED_ORIGINS=http://localhost:3000
+
 # ── Email ────────────────────────────────────────────────────────────
 EMAIL_HOST="smtp-server"
 EMAIL_PORT="1025"
@@ -194,7 +198,7 @@ Then run:
 docker-compose up --build
 ```
 
-API will be available via Swagger at [http://0.0.0.0:8000/swagger/](http://0.0.0.0:8000/swagger/)
+API will be available via Swagger at [http://localhost:8000/swagger/](http://localhost:8000/swagger/)
 
 ---
 
@@ -213,6 +217,6 @@ This portfolio project reflects my professional approach to reusable platform de
 
 ## 📬 Contact
 
-🔗 LinkedIn: [Julien Schiele](https://www.linkedin.com/in/julien-schiele-lead-developer-full-stack/)
+🔗 LinkedIn: [Julien Schiélé](https://www.linkedin.com/in/julien-schiele-lead-developer-full-stack/)
 
 Open to remote freelance missions and contract work.

@@ -16,10 +16,11 @@ VPS Hetzner CX23  —  cheap, fixed cost
 Docker Compose
        ↓
 Caddy 2  (reverse proxy + automatic SSL via Let's Encrypt)
-    ├── nextstep.julien-schiele.dev      → Next.js  :3000
-    ├── api.nextstep.julien-schiele.dev  → Django   :8000
-    ├── julien-schiele.dev               → static portfolio
-    └── status.julien-schiele.dev        → Uptime Kuma :3001
+    ├── nextstep.julien-schiele.dev              → Next.js  :3000
+    ├── nextstep.julien-schiele.dev/api          → Django   :8000
+    ├── admin.nextstep.julien-schiele.dev/api    → Django   :8000
+    ├── julien-schiele.dev                       → static portfolio
+    └── status.julien-schiele.dev                → Uptime Kuma :3001
        ↑
 GitHub Actions  (push main → tests → SSH deploy)
 ```
@@ -63,8 +64,8 @@ What would change at scale: tasks that could block the request cycle (email send
 ```
 create a tag
     │
-    ├── changes detected in backend/**  →  Django tests (Postgres service)
-    ├── changes detected in frontend/** →  ESLint + TypeScript check
+    ├── changes detected in backend/**  →  Django tests
+    ├── changes detected in frontend/** →  ESLint
     │
     └── if all relevant tests pass (or were skipped)
             ↓
@@ -83,7 +84,7 @@ Path filtering ensures Django tests only run on backend changes, and frontend ch
 - Postgres has no public port
 - `/admin/*` blocked at the reverse proxy level
 - `DEBUG=False` enforced via environment variable
-- Cookies: `SESSION_COOKIE_SECURE=True`, `CSRF_COOKIE_SECURE=True`
+- Cookies: `"AUTH_COOKIE_SECURE": not DEBUG`
 - Demo accounts blocked from write actions via a dedicated DRF permission (`IsNotDemoUser`)
 - Root SSH login disabled on the VPS
 
