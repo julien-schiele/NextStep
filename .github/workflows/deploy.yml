@@ -216,6 +216,14 @@ jobs:
       (needs.build-backend.result   != 'failure' && needs.build-frontend.result  != 'failure')
     runs-on: ubuntu-latest
     steps:
+      - name: Sync config files to VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host:     ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key:      ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+          script: sync nextstep config
+            
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
         with:
