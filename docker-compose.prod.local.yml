@@ -1,0 +1,96 @@
+services:
+
+    caddy:
+        image: caddy:2-alpine
+        container_name: nextstep_caddy
+        restart: unless-stopped
+        ports:
+            - "80:80"
+            - "8000:8000"
+            - "3001:3001"
+            - "8888:8888"
+        volumes:
+            - ./Caddyfile.local:/etc/caddy/Caddyfile:ro
+            - caddy_data:/data
+            - caddy_config:/config
+            - caddy_logs:/var/log/caddy
+            - goaccess_report:/srv/stats:ro 
+        networks:
+            - nextstep_net
+
+    django:
+        build: ./backend
+        container_name: nextstep_django
+        restart: unless-stopped
+        expose:
+            - "8000"
+        depends_on:
+            - database
+        env_file:
+            - .env.prod.local
+        command: gunicorn core.wsgi:application --bind 0.0.0.0:8000 --workers 2 --timeout 120
+        networks:
+            - nextstep_net
+
+    nextjs:
+        build: ./frontend
+        container_name: nextstep_nextjs
+        restart: unless-stopped
+        expose:
+            - "3000"
+        depends_on:
+            - django
+        env_file:
+            - .env.prod.local
+        command: start
+        networks:
+            - nextstep_net
+
+    database:
+        image: postgres:15
+        container_name: nextstep_database
+        restart: unless-stopped
+        expose:
+            - "5432"
+        volumes:
+            - db_data:/var/lib/postgresql/data
+        env_file:
+            - .env.prod.local
+        networks:
+            - nextstep_net
+
+    uptime-kuma:
+        image: louislam/uptime-kuma:2
+        container_name: nextstep_uptime
+        restart: unless-stopped
+        volumes:
+            - uptime_data:/app/data
+        expose:
+            - "3001"
+        networks:
+            - nextstep_net
+
+    goaccess:
+        image: allinurl/goaccess:latest
+        container_name: nextstep_goaccess
+        volumes:
+            - caddy_logs:/var/log/caddy:ro
+            - goaccess_report:/srv/stats
+            - ./goaccess.conf:/etc/goaccess/goaccess.conf:ro
+            - ./goaccess-generate.sh:/generate.sh:ro
+        entrypoint: sh
+        command: /generate.sh
+        networks:
+            - nextstep_net
+
+volumes:
+    db_data:
+    caddy_data:
+    caddy_config:
+    uptime_data:
+    goaccess_report:
+    caddy_logs:
+
+networks:
+    nextstep_net:
+        driver: bridge
