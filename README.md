@@ -142,7 +142,7 @@ NextStep demonstrates how to:
 
 * Backend API: **complete and functional**
 * Swagger documentation: **available**
-* Frontend (Next.js): **planned / in progress**
+* Frontend (Next.js): **complete and functional**
 * Production-ready design, intentionally minimal in scope
 
 ---
