@@ -6,3 +6,5 @@
 # Keep examples versioned
 !.env.example
 !.env.prod.example
+# Database dumps
+backups/

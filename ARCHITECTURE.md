@@ -52,6 +52,13 @@ For a portfolio with near-zero traffic, running Postgres in a container on the s
 
 What would change in production: move to a managed Postgres instance (RDS, Supabase, or Hetzner Managed Database) for automatic backups, point-in-time recovery, and failover.
 
+### Postgres major upgrades: dump/restore onto a new volume
+The image is pinned to a major version (`postgres:18`), never `latest`: a major Postgres version cannot start on a data directory written by an older one, so an unpinned tag would turn a routine `docker compose pull` into a broken database. The same major is used in every environment (local, prod, CI) so tests run against what production runs.
+
+Upgrades (15 → 18) are done with [`scripts/migrate-postgres-15-to-18.sh`](scripts/migrate-postgres-15-to-18.sh): stop the app to freeze writes, `pg_dump`, start the new major on a **new** volume, `pg_restore`, compare exact row counts table by table, restart. The old volume is never modified, so rollback is just pointing the compose file back to it. `pg_upgrade` would be faster, but needs both versions' binaries in the same container — dump/restore is simpler and the downtime is negligible at this data size.
+
+What would change at scale: a managed DB's in-place major upgrade, or logical replication to the new version for a near-zero-downtime switchover.
+
 ### Synchronous tasks over async queue
 Currently, periodic tasks (demo data reset, backups) run as cron jobs on the VPS. No message queue or worker process.
 

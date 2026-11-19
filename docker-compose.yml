@@ -36,13 +36,13 @@ services:
       - nextstep_net
 
   database:
-    image: postgres:15
+    image: postgres:18
     container_name: nextstep_database
     restart: unless-stopped
     ports:
       - "5432:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - db_data_pg18:/var/lib/postgresql
     env_file:
       - .env
     networks:
@@ -87,7 +87,7 @@ services:
 
 volumes:
   frontend_node_modules:
-  db_data:
+  db_data_pg18:
   pgadmin_data:
   mailhog-data:
 
